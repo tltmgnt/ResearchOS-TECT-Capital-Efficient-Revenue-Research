@@ -1,1 +1,16 @@
-import{mkdir,copyFile}from'node:fs/promises';await mkdir('dist/docs',{recursive:true});for(const n of ['index.html','app.mjs','model.mjs','style.css','example.json'])await copyFile(n,'dist/'+n);await copyFile('docs/MODEL.md','dist/docs/MODEL.md');console.log('Static app in dist/. Serve on localhost or HTTPS.');
+import {mkdir,copyFile,readFile,writeFile} from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
+await mkdir('dist/docs',{recursive:true});
+for(const n of ['index.html','app.mjs','model.mjs','style.css','example.json'])await copyFile(n,'dist/'+n);
+await copyFile('docs/MODEL.md','dist/docs/MODEL.md');
+const [html,css,model,app,example]=await Promise.all(['index.html','style.css','model.mjs','app.mjs','example.json'].map(p=>readFile(p,'utf8')));
+const modelCode=model.replaceAll('export function ','function ');
+const appCode=app.replace(/^import[^\n]*\n/,'').replace("await(await fetch('./example.json')).json()",JSON.stringify(JSON.parse(example)));
+const code=modelCode+'\n'+appCode;
+const checked=spawnSync(process.execPath,['--check','--input-type=module'],{input:code,encoding:'utf8'});
+if(checked.status!==0)throw Error(checked.stderr||'Standalone syntax check failed');
+const safeCode=code.replace(/<\/script/gi,'<\\/script');
+const standalone=html.replace('<link rel="stylesheet" href="style.css">','<style>'+css+'</style>').replace('<script type="module" src="app.mjs"></script>','<script type="module">'+safeCode+'</script>');
+if(standalone.includes('src="app.mjs"')||appCode.includes("fetch('./example.json')"))throw Error('Standalone bundling incomplete');
+await writeFile('dist/revenue-studio.html',standalone);
+console.log('Built static app and standalone revenue-studio.html; standalone JavaScript syntax verified.');
