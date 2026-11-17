@@ -1,0 +1,25 @@
+name: Revenue research checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --check model.mjs && node --check app.mjs && node --check cli.mjs
+      - run: npm test
+      - run: node cli.mjs example.json /tmp/revenue-results.csv
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: revenue-research-node-${{ matrix.node }}
+          path: dist/

@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "name": "Synthetic low-capital experiment comparison",
+  "currency": "USD (fictional inputs)",
+  "months": 6,
+  "startingCash": 300,
+  "hourlyTimeValue": 20,
+  "source": "Synthetic assumptions. No market-demand evidence or validated revenue claim.",
+  "review": "",
+  "experiments": [
+    {
+      "name": "Research service pilot",
+      "startupCost": 100,
+      "fixedMonthly": 20,
+      "marketingMonthly": 30,
+      "leadsMonthly": 20,
+      "conversion": 0.1,
+      "price": 150,
+      "variableCost": 10,
+      "feeRate": 0.03,
+      "deliveryHours": 4,
+      "availableHours": 24,
+      "acquisitionHours": 4,
+      "paymentDelay": 1,
+      "downsideMultiplier": 0.5,
+      "upsideMultiplier": 1.5
+    },
+    {
+      "name": "Digital template pilot",
+      "startupCost": 80,
+      "fixedMonthly": 15,
+      "marketingMonthly": 20,
+      "leadsMonthly": 100,
+      "conversion": 0.03,
+      "price": 25,
+      "variableCost": 1,
+      "feeRate": 0.05,
+      "deliveryHours": 0.25,
+      "availableHours": 20,
+      "acquisitionHours": 10,
+      "paymentDelay": 0,
+      "downsideMultiplier": 0.5,
+      "upsideMultiplier": 2
+    }
+  ]
+}
