@@ -10,7 +10,7 @@ const code=modelCode+'\n'+appCode;
 const checked=spawnSync(process.execPath,['--check','--input-type=module'],{input:code,encoding:'utf8'});
 if(checked.status!==0)throw Error(checked.stderr||'Standalone syntax check failed');
 const safeCode=code.replace(/<\/script/gi,'<\\/script');
-const standalone=html.replace('<link rel="stylesheet" href="style.css">','<style>'+css+'</style>').replace('<script type="module" src="app.mjs"></script>','<script type="module">'+safeCode+'</script>');
+const standalone=html.replace('<link rel="stylesheet" href="style.css">',()=>'<style>'+css+'</style>').replace('<script type="module" src="app.mjs"></script>',()=>'<script type="module">'+safeCode+'</script>');
 if(standalone.includes('src="app.mjs"')||appCode.includes("fetch('./example.json')"))throw Error('Standalone bundling incomplete');
 await writeFile('dist/revenue-studio.html',standalone);
 console.log('Built static app and standalone revenue-studio.html; standalone JavaScript syntax verified.');
