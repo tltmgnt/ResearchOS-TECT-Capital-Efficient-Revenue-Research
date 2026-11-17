@@ -4,6 +4,9 @@ Independent research workspace for comparing revenue experiments with limited up
 ## Implemented
 Browser app and CLI compare declared downside/base/upside demand, delivery capacity, costs, cash collection delays, funding gaps, horizon-bounded payback and owner-time assumptions. Includes source/review notes, JSON editing/import/export, local storage, CSV results, monthly cash timelines and Markdown research memos. Synthetic examples only; no real earnings or demand claim.
 
+## Standalone app
+Download the revenue-research-node-22 or node-24 artifact from a successful Actions run, unzip it, and open **revenue-studio.html** directly. The file embeds its model, styles and synthetic example; no server or network is required. Browser file-origin storage behavior varies, so use JSON exports for backups. Keep the docs/ folder alongside it for the model documentation link.
+
 ## Run
 Node 22+, no npm dependencies:
 ```sh
@@ -11,7 +14,7 @@ npm test
 npm run build
 python -m http.server 8000 --directory dist
 ```
-Open http://localhost:8000. Or serve the repository root. Modules and demo loading require localhost or HTTPS; file:// is unsupported.
+Open http://localhost:8000. Or serve the repository root. Modules and demo loading require localhost or HTTPS; file:// is unsupported for the modular index.html; use revenue-studio.html for direct opening.
 ```sh
 node cli.mjs example.json
 node cli.mjs example.json results.json
